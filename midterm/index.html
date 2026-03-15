@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Predictor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body class="bg-gray-300">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
+        <div class="w-full max-w-lg bg-white  shadow-md p-8 border-1" x-data="insuranceForm()">
+            <div class="text-end mb-4">
+                <a href="table.html" class="text-sm text-blue-600 hover:text-blue-800 font-medium">View Records →</a>
+            </div>
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Insurance Cost Predictor</h1>
+                <p class="text-gray-600 mt-2">Enter your information</p>
+            </div>
+
+            <form @submit.prevent="submitForm" class="space-y-5">
+                <!-- Age -->
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+                    <input type="number" id="age" x-model.number="form.age" min="18" max="100" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <!-- Sex -->
+                <div>
+                    <label for="sex" class="block text-sm font-medium text-gray-700">Sex</label>
+                    <select id="sex" x-model="form.sex" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <!-- BMI -->
+                <div>
+                    <label for="bmi" class="block text-sm font-medium text-gray-700">BMI</label>
+                    <input type="number" id="bmi" x-model.number="form.bmi" step="0.1" min="10" max="60" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <!-- Number of Children -->
+                <div>
+                    <label for="children" class="block text-sm font-medium text-gray-700">Number of Children</label>
+                    <input type="number" id="children" x-model.number="form.children" min="0" max="10" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <!-- Smoking Status -->
+                <div>
+                    <label for="smoker" class="block text-sm font-medium text-gray-700">Do you smoke?</label>
+                    <select id="smoker" x-model="form.smoker" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select Status</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <!-- Region -->
+                <div>
+                    <label for="region" class="block text-sm font-medium text-gray-700">Region</label>
+                    <select id="region" x-model="form.region" required
+                        class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">Select Region</option>
+                        <option value="northeast">Northeast</option>
+                        <option value="northwest">Northwest</option>
+                        <option value="southeast">Southeast</option>
+                        <option value="southwest">Southwest</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" :disabled="loading"
+                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                    <span x-show="!loading">Predict Cost</span>
+                    <span x-show="loading">Predicting...</span>
+                </button>
+            </form>
+
+            <!-- Error Message -->
+            <template x-if="error">
+                <div class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"
+                    x-text="error"></div>
+            </template>
+
+            <!-- Prediction Result -->
+            <template x-if="prediction !== null">
+                <div class="mt-6 p-4 bg-green-100 border border-green-400 rounded-lg">
+                    <p class="text-sm text-gray-700 mb-2">Predicted Insurance Cost:</p>
+                    <p class="text-3xl font-bold text-green-600" x-text="'$' + (prediction ? prediction.toFixed(2) : '0.00')"></p>
+                </div>
+            </template>
+        </div>
+    </div>
+</body>
+
+</html>

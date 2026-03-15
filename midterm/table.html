@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Records</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="table.js"></script>
+</head>
+
+<body class="bg-gray-300">
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Prediction Records</h1>
+                    <p class="text-gray-600 mt-2">All insurance cost predictions</p>
+                </div>
+                <a href="index.html" class="bg-blue-600 text-white font-medium py-2  px-4  rounded-lg hover:bg-blue-700">← Back to Form</a>
+            </div>
+
+            <div x-data="recordsTable()"  class="bg-white  shadow-md  overflow-hidden border-1">
+                <div x-show="loading" class="p-8 text-center">
+                    <p class="text-gray-600">Loading records...</p>
+                </div>
+
+                <div x-show="error" class="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg m-4"
+                    x-text="error"></div>
+
+                <div x-show="!loading && records.length === 0 && !error" class="p-8 text-center">
+                    <p class="text-gray-600">No prediction records found. <a href="index.html" class="text-blue-600 hover:text-blue-800">Create one</a></p>
+                </div>
+
+                <!-- Records Table -->
+                <div x-show="!loading && records.length > 0" class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr >
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Age</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Sex</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">BMI</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Children</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Smoker</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Region</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Predicted Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="record in records" :key="record.id">
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.age"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.sex"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.bmi.toFixed(2)"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.children"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.smoker"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="record.region"></td>
+                                    <td class="px-6 py-4 text-sm font-semibold text-green-600" x-text="'$' + record.predicted_cost.toFixed(2)"></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Records Summary -->
+                <div x-show="!loading && records.length > 0" class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                    <p class="text-sm text-gray-600">Total records: <strong x-text="records.length"></strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
